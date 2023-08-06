@@ -1,8 +1,9 @@
 package com.example.springboot.dtos;
 
 
-public record AgendaRecordDto(String nome, String email, String telefone) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-
+public record AgendaRecordDto(@NotBlank String nome, @NotNull String email, @NotNull String telefone) {
 
 }
