@@ -4,7 +4,6 @@ import com.example.springboot.dtos.AgendaRecordDto;
 import com.example.springboot.models.AgendaModel;
 import com.example.springboot.repositories.AgendaRepository;
 import jakarta.validation.Valid;
-import org.apache.logging.log4j.spi.ObjectThreadContextMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,32 +11,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.springboot.utils.Response;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 //Anotação indica que será um bean a usar API REST
 @RestController
-public class AgendaController {
+public class ContatoController {
 
 
     //Injeção de dependencia
     @Autowired
     AgendaRepository agendaRepository;
 
-    @PostMapping("/agenda")
+    @PostMapping("/contatos")
     public ResponseEntity<AgendaModel> saveContact(@RequestBody @Valid AgendaRecordDto agendaRecordDto){
         var agendaModel = new AgendaModel();
         BeanUtils.copyProperties(agendaRecordDto, agendaModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(agendaRepository.save(agendaModel));
     }
 
-    @GetMapping("/agenda")
+    @GetMapping("/contatos")
     public ResponseEntity <List<AgendaModel>> getAllContacts(){
         return ResponseEntity.status(HttpStatus.OK).body(agendaRepository.findAll());
     }
 
-    @GetMapping("/agenda/{nome}")
+  /*  @GetMapping("/contatos/{nome}")
     public ResponseEntity <Response<List<AgendaModel>>> getContactbyName(@PathVariable(value = "nome") String nome){
         List<AgendaModel> foundContacts = agendaRepository.findByNome(nome);
         Response<List<AgendaModel>> response = new Response<>();
@@ -47,17 +45,21 @@ public class AgendaController {
         }
         response.setData(foundContacts);
         return ResponseEntity.status(HttpStatus.OK).body((Response<List<AgendaModel>>) response);
-    }
-
-
-  /*  @GetMapping("/agenda/{telefone}")
-    public ResponseEntity<Object> getContactbyTelefone(@PathVariable(value = "telefone") String telefone){
-        Optional<AgendaModel> contactO = Optional.ofNullable(agendaRepository.findByTelefone(telefone));
-        if(contactO.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contact not found.");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(contactO.get());
     }*/
+
+
+   @GetMapping("/contatos/{telefone}")
+    public ResponseEntity<Response<AgendaModel>> getContactbyTelefone(@PathVariable(value = "telefone") String telefone){
+       // Optional<AgendaModel> contactO = Optional.ofNullable(agendaRepository.findByTelefone(telefone));
+       Optional<AgendaModel> foundContact = agendaRepository.findByTelefone(telefone);
+       Response <AgendaModel> response = new Response<>() ;
+       if(foundContact.isEmpty()){
+           response.getErrors().add("Contact no found");
+           return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+       }
+        response.setData(foundContact.get());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
     @PutMapping("/agenda/{nome}")
     public ResponseEntity<Object> updateContato(@PathVariable(value="nome") String nome, @RequestBody @Valid AgendaRecordDto agendaRecordDto){

@@ -8,7 +8,8 @@ import java.util.UUID;
 
 @Entity
 //Define o nome a ser dado para a tabela no database
-@Table(name = "TB_Agenda")
+@Table(name = "TB_Agenda", uniqueConstraints = @UniqueConstraint(columnNames = "telefone"))
+
 public class AgendaModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,6 +22,7 @@ public class AgendaModel implements Serializable {
     private UUID idContato;
     private String nome;
     private String email;
+    @Column
     private String telefone;
 
     public UUID getIdContato() {

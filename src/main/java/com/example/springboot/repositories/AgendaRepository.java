@@ -4,6 +4,7 @@ import com.example.springboot.models.AgendaModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 //Esta interface irá auxiliar a habilitar todos os métodos prontos do JPA para realizar os metodos HTTPS
@@ -13,7 +14,7 @@ import java.util.UUID;
 public interface AgendaRepository extends JpaRepository<AgendaModel, UUID> {
 
     List<AgendaModel> findByNome(String nome);
-    AgendaModel findByTelefone(String telefone);
+    Optional<AgendaModel> findByTelefone(String telefone);
 
 
 
