@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.springboot.utils.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,16 @@ public class AgendaController {
         response.setData(foundContacts);
         return ResponseEntity.status(HttpStatus.OK).body((Response<List<AgendaModel>>) response);
     }
+
+
+  /*  @GetMapping("/agenda/{telefone}")
+    public ResponseEntity<Object> getContactbyTelefone(@PathVariable(value = "telefone") String telefone){
+        Optional<AgendaModel> contactO = Optional.ofNullable(agendaRepository.findByTelefone(telefone));
+        if(contactO.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contact not found.");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(contactO.get());
+    }*/
 
     @PutMapping("/agenda/{nome}")
     public ResponseEntity<Object> updateContato(@PathVariable(value="nome") String nome, @RequestBody @Valid AgendaRecordDto agendaRecordDto){

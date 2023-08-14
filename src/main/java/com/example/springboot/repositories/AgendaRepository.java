@@ -13,6 +13,7 @@ import java.util.UUID;
 public interface AgendaRepository extends JpaRepository<AgendaModel, UUID> {
 
     List<AgendaModel> findByNome(String nome);
+    AgendaModel findByTelefone(String telefone);
 
 
 
