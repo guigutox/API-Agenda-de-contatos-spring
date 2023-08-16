@@ -75,15 +75,15 @@ public class ContatoController {
         return ResponseEntity.status(HttpStatus.OK).body(agendaRepository.save(agendaModel));
     }
 
-    @DeleteMapping("/agenda/{nome}")
-    public ResponseEntity<Object> deleteContato(@PathVariable(value = "nome") String nome){
-        List<AgendaModel> contactO = agendaRepository.findByNome(nome);
+    @DeleteMapping("/agenda/{telefone}")
+    public ResponseEntity<Object> deleteContato(@PathVariable(value = "telefone") String telefone){
+        Optional<AgendaModel> foundContact = agendaRepository.findByTelefone(telefone);
         Response<List<AgendaModel>> response = new Response<>();
-        if(contactO.isEmpty()){
+        if(foundContact.isEmpty()){
             response.getErrors().add("Contact not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-        agendaRepository.delete(contactO.get(0));
+        agendaRepository.delete(foundContact.get());
         return ResponseEntity.status(HttpStatus.OK).body("Contact deleted sucessfully");
     }
 
