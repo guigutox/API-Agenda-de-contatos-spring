@@ -16,6 +16,7 @@ import java.util.Optional;
 
 //Anotação indica que será um bean a usar API REST
 @RestController
+@CrossOrigin("*")
 public class ContatoController {
 
 
